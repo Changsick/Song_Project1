@@ -27,6 +27,8 @@ public class MemberController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	// git push test
 
     // 메인 페이지
     @RequestMapping(value = {"/","/main"})
