@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>Kendo UI Test</title>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2020.2.513/styles/kendo.common.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2020.2.513/styles/kendo.blueopal.min.css" />
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.js"></script>
+
+    <script src="https://kendo.cdn.telerik.com/2020.2.513/js/jquery.min.js"></script>
+    <script>
+        if (typeof jQuery == "undefined") {
+            // Fallback to local jQuery.
+            document.write(decodeURIComponent('%3Cscript src="/path/to/local/jquery.min.js" %3E%3C/script%3E'));
+        }
+    </script>
+
+    <script src="https://kendo.cdn.telerik.com/2020.2.513/js/kendo.all.min.js"></script>
+    <script>
+        if (typeof kendo == "undefined") {
+            // Checking for loaded CSS files is cumbersome,
+            // therefore assume that if the scripts have failed, so have the stylesheets.
+
+            // Fallback to local Kendo UI stylesheets.
+            document.write(decodeURIComponent('%3Clink rel="stylesheet" href="/path/to/local/kendo.common.min.css" %3C/%3E'));
+            document.write(decodeURIComponent('%3Clink rel="stylesheet" href="/path/to/local/kendo.blueopal.min.css" %3C/%3E'));
+
+            // Fallback to local Kendo UI scripts.
+            document.write(decodeURIComponent('%3Cscript src="/path/to/local/kendo.all.min.js" %3E%3C/script%3E'));
+            // Also add kendo.aspnetmvc.min.js or kendo.timezones.min.js if needed.
+        }
+    </script>
+
+</head>
+<body>
+
+<div th:include="view/main/header/Header :: copy"></div>
+
+<h1>잘못된 접근 403</h1>
+
+
+</body>
+</html>
