@@ -42,7 +42,7 @@
 </head>
 <body>
 
-<div th:include="view/main/header/Header :: copy"></div>
+<div th:include="view/fragment/header/Header :: copy"></div>
 
 <div sec:authorize="isAuthenticated()">
     <span sec:authentication="name"></span> 님 관리자페이지~

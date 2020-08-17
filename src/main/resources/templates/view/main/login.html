@@ -80,7 +80,7 @@
 
 </head>
 <body>
-<!-- <div th:include="view/main/header/Header :: copy"></div> -->
+<div th:include="view/fragment/header/Header :: copy"></div>
 <form th:action="@{/user/login/chk}" method="post" id="loginForm"> <!-- /user/login/result -->
 <!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> -->
 <input type="text" name="id" id="id" placeholder="id">

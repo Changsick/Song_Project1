@@ -42,7 +42,8 @@
 </head>
 <body>
 
-<div th:include="view/main/header/Header :: copy"></div>
+<!-- <div th:include="view/main/header/Header :: copy"></div> -->
+<div th:include="view/fragment/header/Header :: copy"></div>
 
 <div sec:authorize="isAuthenticated()">
     <span sec:authentication="name"></span> 님 반갑습니다.
@@ -54,8 +55,8 @@
 </div>
 <div sec:authorize="isAuthenticated()">
 	<a sec:authorize="isAuthenticated()" th:href="@{/user/logout/result}">로그아웃</a>
-	<sec:authorize access="hasRole('ROLE_ADMIN') and hasRole('ROLE_USER')">
-		<a sec:authorize="hasRole('ROLE_MEMBER')" th:href="@{/user/info}">내정보</a> <!--  -->
+	<sec:authorize access="hasRole('ROLE_ADMIN') and hasRole('ROLE_MEMBER')">
+		<a sec:authorize="hasRole('ROLE_MEMBER') || hasRole('ROLE_ADMIN')" th:href="@{/user/info}">내정보</a> <!--  -->
 	</sec:authorize>
     <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}">어드민</a>
 </div>

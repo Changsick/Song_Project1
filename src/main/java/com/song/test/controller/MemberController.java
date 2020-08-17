@@ -93,7 +93,9 @@ public class MemberController {
     }
 
     // 내 정보 페이지 => 평범한 유저, admin 둘다 허용하고 싶어서 방법을 몰라 분기처리함
-    @PreAuthorize("hasRole('ROLE_MEMBER')")
+//    @PreAuthorize("hasRole('ROLE_MEMBER')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')" || "hasRole('ROLE_MEMBER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')" + " || hasRole('ROLE_MEMBER')" )
     @GetMapping("/user/info")
     public String dispMyInfo() {
     	if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")) {
