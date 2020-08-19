@@ -28,17 +28,6 @@ public class WebtoonController {
 		MemberDetail user = memberService.getLoginUserDetails();
 		System.out.println(user);
 		
-		StandardPBEStringEncryptor jasypt = new StandardPBEStringEncryptor();
-        jasypt.setPassword("changsick");      //암호화 키(password)
-        jasypt.setAlgorithm("PBEWithMD5AndDES");
- 
- 
-        String encryptedText = jasypt.encrypt("chang16gh1!2@");    //암호화
-        String plainText = jasypt.decrypt(encryptedText);  //복호화
- 
-        System.out.println("encryptedText:  " + encryptedText); //암호화된 값
-        System.out.println("plainText:  " + plainText);         //복호화된 값
-		
 		return "view/webtoon/uploadMainPreview";
 	}
 	
