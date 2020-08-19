@@ -1,1 +1,1 @@
-org.springframework.boot.env.EnvironmentPostProcessor=com.automateone.config.EncryptionEnvironmentPostProcessor
+org.springframework.boot.env.EnvironmentPostProcessor=com.song.test.config.DecEnviromentPostProcessor
