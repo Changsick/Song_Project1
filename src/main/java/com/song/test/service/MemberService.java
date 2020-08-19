@@ -73,9 +73,10 @@ public class MemberService implements UserDetailsService {
 		memberDAO.joinUser(memberDto);
 	}
 	
-	public MemberDetail getLoginUserDetails(String id)
+	public MemberDetail getLoginUserDetails()
 	{
-		return (MemberDetail)loadUserByUsername(id);
+		System.out.println("id : "+getAuthenicated().getName());
+		return (MemberDetail)loadUserByUsername(getAuthenicated().getName());
 	}
 	
 	/*
@@ -94,6 +95,7 @@ public class MemberService implements UserDetailsService {
 	{
 		return SecurityContextHolder.getContext().getAuthentication();
 	}
+	
 
 	/*public UserDetails validateMember(String id, String pw) {
 

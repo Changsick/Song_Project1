@@ -42,23 +42,12 @@
 </head>
 <body>
 
-<div th:include="view/main/header/Header :: copy"></div>
+<div th:include="view/fragment/header/Header :: copy"></div>
 
 <div sec:authorize="isAuthenticated()">
     <span sec:authentication="name"></span> 님 의 마이페이지~
 </div>
 
-<div sec:authorize="isAnonymous()">
-	<a sec:authorize="isAnonymous()" th:href="@{/user/signup}">회원가입</a>
-	<a sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
-</div>
-<div sec:authorize="isAuthenticated()">
-	<a sec:authorize="isAuthenticated()" th:href="@{/user/logout/result}">로그아웃</a>
-	<sec:authorize access="hasRole('ROLE_ADMIN') and hasRole('ROLE_USER')">
-		<a  th:href="@{/user/info}">내정보</a> <!-- sec:authorize="hasRole('ROLE_MEMBER')" -->
-	</sec:authorize>
-    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}">어드민</a>
-</div>
 
 
 </body>

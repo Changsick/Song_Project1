@@ -31,6 +31,7 @@ public class EmailController {
 					+ "<button>button</button>";
 			
 			mesgHelper.setFrom("tlakffja@naver.com");
+			
 			mesgHelper.setSubject("title test");
 			mesgHelper.setText(contents, true);
 			mesgHelper.setTo("schsong@gridone.co.kr");
