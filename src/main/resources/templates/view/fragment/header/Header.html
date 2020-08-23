@@ -1,57 +1,75 @@
-kendo cdn info
-
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
 <head>
-    <title>Welcome to Kendo UI</title>
-    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2020.2.513/styles/kendo.common.min.css" />
-    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2020.2.513/styles/kendo.blueopal.min.css" />
-
-    <script src="https://kendo.cdn.telerik.com/2020.2.513/js/jquery.min.js"></script>
-    <script>
-        if (typeof jQuery == "undefined") {
-            // Fallback to local jQuery.
-            document.write(decodeURIComponent('%3Cscript src="/path/to/local/jquery.min.js" %3E%3C/script%3E'));
-        }
-    </script>
-
-    <script src="https://kendo.cdn.telerik.com/2020.2.513/js/kendo.all.min.js"></script>
-    <script>
-        if (typeof kendo == "undefined") {
-            // Checking for loaded CSS files is cumbersome,
-            // therefore assume that if the scripts have failed, so have the stylesheets.
-
-            // Fallback to local Kendo UI stylesheets.
-            document.write(decodeURIComponent('%3Clink rel="stylesheet" href="/path/to/local/kendo.common.min.css" %3C/%3E'));
-            document.write(decodeURIComponent('%3Clink rel="stylesheet" href="/path/to/local/kendo.blueopal.min.css" %3C/%3E'));
-
-            // Fallback to local Kendo UI scripts.
-            document.write(decodeURIComponent('%3Cscript src="/path/to/local/kendo.all.min.js" %3E%3C/script%3E'));
-            // Also add kendo.aspnetmvc.min.js or kendo.timezones.min.js if needed.
-        }
-    </script>
-
 
 </head>
 <body>
+
 <div th:fragment="copy">
-		&copy;<a th:href="@{/}"><img th:attr="src=@{/image/gridone.PNG}" /></a>
-	<div sec:authorize="isAuthenticated()">
-	    <span sec:authentication="name"></span> 님 반갑습니다.
+		&copy;
+	
+	<div class="row">
+		<div class="col-md"><a th:href="@{/}"><img th:attr="src=@{/image/gridone.PNG}" /></a></div>
+		<div class="col-md"><input type="text" placeholder="검색"><button>검색</button></div>
+		<div class="col-md">
+			<div sec:authorize="isAnonymous()">
+				<a sec:authorize="isAnonymous()" th:href="@{/main/signup}">회원가입</a>
+				<a sec:authorize="isAnonymous()" th:href="@{/main/login}">로그인</a>
+			</div>
+			<div sec:authorize="isAuthenticated()">
+			    <span sec:authentication="name"></span> 님 반갑습니다.
+				<a sec:authorize="isAuthenticated()" th:href="@{/user/logout/result}">로그아웃</a>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+	<ul class="nav nav-pills"> <!-- nav-tabs --> 
+		<li class="nav-item">
+			<a class="nav-link active" th:href="@{/}" onclick="nav_click(event)" id="main">홈</a>
+		</li><!-- data-toggle="tab" data-load="false" data-url="https://localhost:8080/song_project2/" -->
+		<li class="nav-item">
+			<a class="nav-link" href="#" id="webtoon">웹툰</a>
+		</li>
+		<!-- <div class="col-md"> -->		
+		<!-- <div sec:authorize="isAuthenticated()"> -->
+			<!-- <sec:authorize access="hasRole('ROLE_ADMIN') or hasRole('ROLE_MEMBER')"> -->
+		<li class="nav-item">
+			<a class="nav-link" sec:authorize="hasRole('ROLE_MEMBER') || hasRole('ROLE_ADMIN')" th:href="@{/user/info}" id="myInfo">내정보</a> <!--  -->
+		</li>
+		<li class="nav-item">			
+				<a class="nav-link" sec:authorize="hasRole('ROLE_MEMBER') || hasRole('ROLE_ADMIN')" th:href="@{/webtoon/webtoonUpload}" id="uploadWebtoon">웹툰올리기</a> <!--  -->
+		</li>
+			<!-- </sec:authorize> -->
+		<li class="nav-item">
+		    	<a class="nav-link" th:href="@{/admin}" sec:authorize="hasRole('ROLE_ADMIN')" id="admin">어드민</a>
+		    	<!-- th:href="@{/admin}" -->
+	    </li>
+		<!-- </div> -->
+		<!-- </div> -->
+	</ul>
 	</div>
 	
-	<div sec:authorize="isAnonymous()">
-		<a sec:authorize="isAnonymous()" th:href="@{/main/signup}">회원가입</a>
-		<a sec:authorize="isAnonymous()" th:href="@{/main/login}">로그인</a>
-	</div>
-	<div sec:authorize="isAuthenticated()">
-		<a sec:authorize="isAuthenticated()" th:href="@{/user/logout/result}">로그아웃</a>
-		<sec:authorize access="hasRole('ROLE_ADMIN') or hasRole('ROLE_MEMBER')">
-			<a sec:authorize="hasRole('ROLE_MEMBER') || hasRole('ROLE_ADMIN')" th:href="@{/user/info}">내정보</a> <!--  -->
-			<a sec:authorize="hasRole('ROLE_MEMBER') || hasRole('ROLE_ADMIN')" th:href="@{/webtoon/webtoonUpload}">웹툰올리기</a> <!--  -->
-		</sec:authorize>
-	    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}">어드민</a>
-	</div>
+	<script>
+		// 위 ajax를 통한 data.load는 따로 bootstrap에 정의된 기능이 아니기 때문에 구현해야한다.
+		// 메뉴가 선택되기 전의 이벤틀르 가져온다.
+		$('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+		// 선택되는 요소를 오브젝트화 한다.
+		$this = $(e.target);
+		// data-load가 false의 경우는 content에 data-load를 한다.
+		if(!$this.data("load")) {
+		// tab-content의 id를 취득한다.
+		var id = $this.attr("href");
+		// 페이지 로드를 한다.
+		$(id).load($this.data("url"));
+		// data-load를 true로 변환하여 중복 로딩이 없게 한다.
+		$this.data("load", true);
+		}
+		});
+		$('a[data-toggle="tab"]').on('hide.bs.tab', function (e) {
+		// 여기에 load 삭제 기능을 넣어도 되고...
+		});
+	</script>
+
 </div>
 
 </body>

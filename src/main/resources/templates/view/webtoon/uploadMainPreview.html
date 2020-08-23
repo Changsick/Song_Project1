@@ -1,51 +1,17 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="">
-<meta name="author" content="">
-<title>Kendo UI Test</title>
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
-
-    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2020.2.513/styles/kendo.common.min.css" />
-    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2020.2.513/styles/kendo.blueopal.min.css" />
-    <link rel="stylesheet" th:attr="href=@{/css/dropzone/dropzone.css}" />
+<div th:replace="view/fragment/includes/includes :: heads"></div>   
+	<link rel="stylesheet" th:attr="href=@{/css/dropzone/dropzone.css}" />
     <link rel="stylesheet" th:attr="href=@{/css/dropzone/dropzone.min.css}" />
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.js"></script>
-
-	<script th:attr="src=@{/js/dropzone/dropzone.js}"></script>
-	<script th:attr="src=@{/js/dropzone/dropzone.min.js}"></script>
-
-    <script src="https://kendo.cdn.telerik.com/2020.2.513/js/jquery.min.js"></script>
-    <script>
-        if (typeof jQuery == "undefined") {
-            // Fallback to local jQuery.
-            document.write(decodeURIComponent('%3Cscript src="/path/to/local/jquery.min.js" %3E%3C/script%3E'));
-        }
-    </script>
-
-    <script src="https://kendo.cdn.telerik.com/2020.2.513/js/kendo.all.min.js"></script>
-    <script>
-        if (typeof kendo == "undefined") {
-            // Checking for loaded CSS files is cumbersome,
-            // therefore assume that if the scripts have failed, so have the stylesheets.
-
-            // Fallback to local Kendo UI stylesheets.
-            document.write(decodeURIComponent('%3Clink rel="stylesheet" href="/path/to/local/kendo.common.min.css" %3C/%3E'));
-            document.write(decodeURIComponent('%3Clink rel="stylesheet" href="/path/to/local/kendo.blueopal.min.css" %3C/%3E'));
-
-            // Fallback to local Kendo UI scripts.
-            document.write(decodeURIComponent('%3Cscript src="/path/to/local/kendo.all.min.js" %3E%3C/script%3E'));
-            // Also add kendo.aspnetmvc.min.js or kendo.timezones.min.js if needed.
-        }
-    </script>
-
     
+    <script th:attr="src=@{/js/dropzone/dropzone.js}"></script>
+	<script th:attr="src=@{/js/dropzone/dropzone.min.js}"></script> 
     <script type="text/javascript">
+    $(document).ready(function(){
+		$(".nav-link").removeClass("active");
+		$("#uploadWebtoon").addClass("active");
+	});
+    
 	$(function(){
 		
     	$("#test").on("keydown",function(){ // keydown, press 만 되는듯..?
@@ -119,22 +85,22 @@
 </head>
 <body>
 
-<div th:include="view/fragment/header/Header :: copy"></div>
+<div th:include="view/fragment/header/Header :: copy" class="container"> </div>
 
-썸네일올리는페이지
-
-<input type="text" id="test" />
-<!-- onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" --> 
-
-<input type="text"  id="test2"/> <!-- onkeyup="this.value=this.value.replace(/[^0-9]/g,'')" -->
-<br><br><br>
 
 <!-- <form action="" method="post" class="dropzone" enctype="multipart/form-data">
 <div class="fallback" id="aa">
     <input name="file" type="file" multiple />
   </div>
 </form> -->
-
+<div class="container">
+	썸네일올리는페이지
+	
+	<input type="text" id="test" />
+	<!-- onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" --> 
+	
+	<input type="text"  id="test2"/> <!-- onkeyup="this.value=this.value.replace(/[^0-9]/g,'')" -->
+	<br><br><br>
 <div class="row">
     <div class="col-lg-6 col-md-6 col-sm-12">
         <blockquote>
@@ -177,7 +143,7 @@
  
 </div><!-- /. row -->
 
-
+</div>
 
 </body>
 </html>
