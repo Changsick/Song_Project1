@@ -16,13 +16,19 @@ import com.song.test.dto.MemberDetail;
 import com.song.test.service.MemberService;
 
 @Controller
+@RequestMapping("/webtoon")
 public class WebtoonController {
 	
 	@Autowired
 	MemberService memberService;
 
+	@RequestMapping(value = "/main", method = RequestMethod.GET)
+	public String webtoonMain() {
+		return "view/webtoon/main";
+	}
+	
 	@PreAuthorize("hasRole('ROLE_ADMIN')" + " || hasRole('ROLE_MEMBER')" )
-	@RequestMapping(value = "/webtoon/webtoonUpload", method = RequestMethod.GET)
+	@RequestMapping(value = "/webtoonUpload", method = RequestMethod.GET)
 	public String webtoonUpload() {
 		
 		MemberDetail user = memberService.getLoginUserDetails();
@@ -32,7 +38,7 @@ public class WebtoonController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')" + " || hasRole('ROLE_MEMBER')" )
-	@RequestMapping(value = "/webtoon/uploadMainPreview", method = RequestMethod.POST)
+	@RequestMapping(value = "/uploadMainPreview", method = RequestMethod.POST)
 	@ResponseBody
 	public String uploadMainPreview(@RequestParam HashMap<String, Object> map, @RequestBody HashMap<String, Object> map2) {
 //		memberService

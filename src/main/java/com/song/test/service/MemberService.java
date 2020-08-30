@@ -2,11 +2,14 @@ package com.song.test.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -40,18 +43,43 @@ public class MemberService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
 		MemberDTO dto = memberDAO.findByID(id);
-		System.out.println("############dto"+dto);
+		System.out.println("loadUserByUsername############dto"+dto);
 		List<GrantedAuthority> authorities = new ArrayList<>();
 
 		if (dto.getRole().equals(Role.ADMIN.getValue())) {
 			authorities.add(new SimpleGrantedAuthority(Role.ADMIN.getValue()));
-		} else {
+		} else if (dto.getRole().equals(Role.MEMBER.getValue())){
 			authorities.add(new SimpleGrantedAuthority(Role.MEMBER.getValue()));
+		} else {
+			authorities.add(new SimpleGrantedAuthority(Role.NONMOMBER.getValue()));			
 		}
 
 		System.out.println("~~~~~~~~authorities"+authorities);
 //		return new User(dto.getId(), dto.getPw(), authorities);
 		return new MemberDetail(dto);
+	}
+	
+	public void updateAuthority(MemberDetail member) {
+		System.out.println("updateAuthority.member"+member);
+		System.out.println("member ROLE : "+member.getRole());
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		System.out.println("before auth : "+auth);
+
+		List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
+		System.out.println("updatedAuthorities : "+updatedAuthorities);
+		for (GrantedAuthority g : updatedAuthorities) {
+			System.out.println("@@@ : "+g.getAuthority());
+		}
+		updatedAuthorities.remove(0); // 기존에 해당 유저의 role을 지우고 추가해야 됨
+		updatedAuthorities.add( new SimpleGrantedAuthority(member.getRole())); //add your role here [e.g., new SimpleGrantedAuthority("ROLE_NEW_ROLE")]
+		System.out.println("updatedAuthorities2 : "+updatedAuthorities);
+
+		Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), updatedAuthorities);
+
+		SecurityContextHolder.getContext().setAuthentication(newAuth);
+		
+		System.out.println("update auth : "+SecurityContextHolder.getContext().getAuthentication());
 	}
 	
 	public PasswordEncoder passwordEncoder() 
@@ -67,7 +95,7 @@ public class MemberService implements UserDetailsService {
 		if (memberDto.getId().equals("admin")) {
 			memberDto.setRole(Role.ADMIN.getValue());
 		} else {
-			memberDto.setRole(Role.MEMBER.getValue());
+			memberDto.setRole(Role.NONMOMBER.getValue());
 		}
 		System.out.println(memberDto);
 		memberDAO.joinUser(memberDto);
@@ -94,6 +122,11 @@ public class MemberService implements UserDetailsService {
 	public Authentication getAuthenicated() 
 	{
 		return SecurityContextHolder.getContext().getAuthentication();
+	}
+
+	public int updateRole(MemberDetail member) {
+		// TODO Auto-generated method stub
+		return memberDAO.updateRole(member);
 	}
 	
 

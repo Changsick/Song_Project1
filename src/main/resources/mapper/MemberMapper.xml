@@ -21,5 +21,11 @@
 	from member
 	where id = #{id} and pw = #{pw}
 	</select>
+	
+	<update id="updateRole" parameterType="com.song.test.dto.MemberDetail">
+		UPDATE member
+		SET ROLE = #{role}
+		WHERE ID = #{id}
+	</update>
 
 </mapper>

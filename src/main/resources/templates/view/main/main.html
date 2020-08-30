@@ -1,22 +1,226 @@
 <!DOCTYPE html>
 <html>
 <div th:replace="view/fragment/includes/includes :: heads"></div>
+
+<script id="list-template" type="text/x-handlebars-template">
+{{#imgs}}
+	{{#ifCond @index '==' '0'}}
+		<div class="carousel-item active">
+	{{/ifCond}}
+	{{#ifCond @index '!=' '0'}}
+		<div class="carousel-item">
+	{{/ifCond}}
+		<img class="d-block w-100" th:attr="src=@{{{src}}}" style="height: 251px;">
+		<!-- <div class="carousel-caption d-none d-md-block">
+			<h5>TEST{{@index}}</h5>
+			<p>testtesttest</p> -->
+		</div>
+</div>
+{{/imgs}}
+</script>
+
+<script id="indicators-template" type="text/x-handlebars-template">
+{{#imgs}}
+	{{#ifCond @index '==' '0'}}
+		<li data-target="#demo" data-slide-to="{{idx}}" class="active"></li>
+	{{/ifCond}}
+	{{#ifCond @index '!=' '0'}}
+		<li data-target="#demo" data-slide-to="{{idx}}"></li>
+	{{/ifCond}}
+{{/imgs}}
+</script>
+
 <script type="text/javascript">
-	$(document).ready(function(){
+/*![CDATA[*/
+
+	// 날짜포멧
+	function getFormatDate(date){
+	    var year = date.getFullYear();              //yyyy
+	    var month = (1 + date.getMonth());          //M
+	    
+	    var week = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+	    
+	    //month = month >= 10 ? month : '0' + month;  //month 두자리로 저장
+	    var day = date.getDate();                   //d
+	    //day = day >= 10 ? day : '0' + day;          //day 두자리로 저장
+	    var dayOfWeek = week[date.getDay()]; // 요일
+	    
+	    return  month + '월 ' + day + '일 ' + dayOfWeek;       //'-' 추가하여 yyyy-mm-dd 형태 생성 가능  year + '' + 
+	}
+
+	$(function() {
+		// email 인증 안되있는 유저가 로그인 했을 시
+		console.log($("input[name='authEmail']"));
+		if($("input[name='authEmail']").length == 1){
+			if(confirm("이메일 인증 하셔야 유저 서비스를 이용하실 수 있습니다. \n 인증하시겠습니까?")){
+
+				$.ajax({
+					type: "get",
+					url : "email/send",
+					success : function(data, status, xhr) {
+						console.log(data); 
+					}, 
+					error: function(jqXHR, textStatus, errorThrown) { 
+						console.log(jqXHR.responseText); 
+					} 
+				});
+				alert('인증링크가 이메일로 발송되었습니다. \n 확인하셔서 링크를 클릭해주세요');
+			}else{				
+				console.log('인증페이지 ㄴㄴ');
+			}
+		}
+		
 		$(".nav-link").removeClass("active");
 		$("#main").addClass("active");
-	});
 
+		$("#curDate").text(getFormatDate(new Date()));
+		
+		//핸들바 템플릿 가져오기
+		var source = $("#list-template").html();
+		var source2 = $("#indicators-template").html();
+
+		//핸들바 템플릿 컴파일
+		var template = Handlebars.compile(source);
+		var template2 = Handlebars.compile(source2);
+
+		//핸들바 템플릿에 바인딩할 데이터
+		var data = {
+			imgs : [ 
+				{src : "/song_project2/image/webtoon/freedraw.png", href : "", idx : "0"}, 
+				{src : "/song_project2/image/webtoon/gotOfTop.png", href : "", idx : "1"}, 
+				{src : "/song_project2/image/webtoon/facegood.png", href : "", idx : "2"},
+				{src : "/song_project2/image/webtoon/onepeace.png", href : "", idx : "3"}, 
+				{src : "/song_project2/image/webtoon/onepunch.png", href : "", idx : "4"} 
+			]
+		};
+
+		//핸들바 템플릿에 데이터를 바인딩해서 HTML 생성
+		var html = template(data);
+		var html2 = template2(data);
+		console.log('html2',html2);
+		//생성된 HTML을 DOM에 주입
+		$("#imgArea1").append(html);
+		//$("#indicators").append(html2); 
+		//=> indicators 는 핸들바로하면 이상하게나오다.. 적용안되서 5개로 박아놓고 데이터만 바꿔야할듯
+		
+		$("#advertise").click(function(){
+			window.open("https://comic.naver.com/navercontest/2020/top16.nhn");
+		});
+	});
+	
+	/*]]>*/
 </script>
 </head>
 <body>
 
-<!-- <div th:include="view/main/header/Header :: copy"></div> -->
-<div th:include="view/fragment/header/Header :: copy" class="container"></div>
+	<!-- <div th:include="view/main/header/Header :: copy"></div> -->
+	<div th:include="view/fragment/header/Header :: copy" class="container"></div>
 
-<div class="container">
-	Home 메뉴
-</div>
+	<script>
+		$('.carousel').carousel({
+			// 슬리아딩 자동 순환 지연 시간
+			// false면 자동 순환하지 않는다.
+			interval : 1000,
+			// hover를 설정하면 마우스를 가져대면 자동 순환이 멈춘다.
+			pause : "hover",
+			// 순환 설정, true면 1 -> 2가면 다시 1로 돌아가서 반복
+			wrap : true,
+			// 키보드 이벤트 설정 여부(?)
+			keyboard : true
+		})
+	</script>
+	<div class="container" style="margin-top: 10px">
+		<!-- view1 -->
+		<div class="row" style="height: fit-content;padding: 12px 10px 14px;">
+			<div id="mainNav1"
+				style="border: 1px solid rgba(217, 217, 217, .5); width: fit-content;">
+				<div id="dataArea" class="main_common"
+					style="width: fit-content; height: 251px; float: left; padding: 5px;">
+					<h2 class="Ntxt_today_webtoon">오늘의 <b style="color: blue;">웹툰</b></h2>
+					<p class="date" id="curDate"></p>
+					<!-- [D] 클릭된 이미지 a에 class="sel" 추가 -->
+					<ul id="listMenu">
+						<li><a href="#" onclick=""><span class="Ntxt_popular">인기순</span></a></li>
+						<li><a href="#" onclick=""><span class="Ntxt_update">업데이트순</span></a></li>
+						<li><a href="#" onclick=""><span class="Ntxt_count">조회순</span></a></li>
+						<li><a href="#" onclick=""><span class="Ntxt_star_rate">별점순</span></a></li>
+					</ul>
+				</div>
+				<div id="demo" class="carousel slide main_common"
+					data-ride="carousel" style="float: left; height: 251px;">
+					<div class="carousel-inner"
+						style="width: 582px; height: 251px; display: inline-block;"
+						id="imgArea1">
+						<!-- 슬라이드 쇼 -->
+						<!-- / 슬라이드 쇼 끝 -->
+					</div>
+
+					<!-- 인디케이터 -->
+					<div id="indicators">
+						<!-- 왼쪽 오른쪽 화살표 버튼 -->
+
+							<a class="carousel-control-prev" href="#demo" data-slide="prev">
+								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+								<!-- <span>Previous</span> -->
+							</a> <a class="carousel-control-next" href="#demo" data-slide="next">
+								<span class="carousel-control-next-icon" aria-hidden="true"></span>
+								<!-- <span>Next</span> -->
+							</a>
+
+						<!-- / 화살표 버튼 끝 -->
+
+						<ul class="carousel-indicators" id="indicators">
+							<li data-target="#demo" data-slide-to="0" class="active"></li>
+							<li data-target="#demo" data-slide-to="1"></li>
+							<li data-target="#demo" data-slide-to="2"></li>
+							<li data-target="#demo" data-slide-to="3"></li>
+							<li data-target="#demo" data-slide-to="4"></li>
+						</ul>
+					</div>
+					<!-- 인디케이터 끝 -->
+
+				</div>
+			</div>
+			
+			<div style="width: 220px;height: 251px;border: 1px solid rgba(217, 217, 217, .5);margin-left: 11%;padding: 0 18px;">
+				<h6 style="margin-top: 20px;"><b style="color: blue;">새로운</b> 웹툰 만화</h6>
+				<img th:attr="src=@{/image/webtoon/returnToPlayer.png}" style="width: 183px;height: 110px">
+				<div style="float: left;">
+					<table>
+						<tr>
+							<td style="font-size: 13px;"><a href="#">리턴 투 플레이어</a></td>
+							<td style="font-size: 13px;">인덱스/세혼</td>
+						</tr>
+						<tr>
+							<td></td>
+						</tr>
+						<tr style="font-size: 12px;">
+							<td colspan="2">어느 날, 게임이 되어버린 세상.갑자기 나타난 몬스터들이 사람들을 죽이...</td>
+						</tr>
+					</table>	
+				</div>
+			</div>
+			
+		</div>
+		<!-- //view1 -->
+		
+		<!-- advertise -->
+		<div class="row" style="height: fit-content;padding: 12px 10px 14px;">
+			<div>
+				<a id="advertise" style="cursor: pointer;" ><!-- href="https://comic.naver.com/navercontest/2020/top16.nhn" -->
+					<img th:attr="src=@{/image/util/adver.png}" style="width: 762px;">
+				</a>
+			</div>
+			<div>
+				<a id="advertise2" style="cursor: pointer;" href="https://dogdictoinary.netlify.app"><!-- href="https://comic.naver.com/navercontest/2020/top16.nhn" -->
+					<img th:attr="src=@{/image/util/docDictionary.png}" style="margin-left: 42%;border: 1px solid rgba(217, 217, 217, .5);">
+				</a>
+			</div>
+		</div>
+		<!-- //advertise -->
+	</div>
+
+<input sec:authorize="hasRole('ROLE_NONMEMBER')" type="hidden" name="authEmail"/>
 
 </body>
 </html>

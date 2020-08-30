@@ -1,20 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html style="height: 100%">
 <div th:replace="view/fragment/includes/includes :: heads"></div>
     
     <script type="text/javascript">
-    $(function(){
-    	var mesg = $("#mesg").val();
-    	console.log(mesg);
-    	console.log(mesg.length);
-    	if(mesg.length != 0 || mesg != ""){ //mesg != null || mesg != undefined || 
-    		alert(mesg);
-    	}
-    	
-    	$("#login").click(function(){
-    		login();
-    	});
-    });
+    /*![CDATA[*/
     function login(){
     	var id = $("#id").val();
     	var pw = $("#pw").val();
@@ -33,26 +22,90 @@
     		$("#pw").focus();
     		return false;
     	}
+    	if($("#saveID").prop("checked")){
+			addCookieForID(setCookie);
+		}else{
+			removeCookieForID(deleteCookie);
+		}
 		$("#loginForm").submit();	
     }
-    function validation(){
-    	
-    	
+
+    function setCookie(name, value, day){
+    	var date = new Date();
+        date.setTime(date.getTime() + day * 60 * 60 * 24 * 1000); // 24시간동안 쿠키유지
+        
+        document.cookie = name + '=' + value + ';expires=' + date.toUTCString() + ';path=/';
     }
+
+    function getCookie(name){
+    	var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+        return value? value[2] : null;
+    }
+
+    function deleteCookie(name){
+    	var date = new Date();
+        document.cookie = name + "= " + "; expires=" + date.toUTCString() + "; path=/";
+    }
+
+
+    function addCookieForID(setCookie){
+    	
+        var id = $("#id").val();
+        setCookie("id",id,1);	
+    }
+
+    function getCooKieForID(getCookie){
+
+        return getCookie("id");
+    }
+
+    function removeCookieForID(deleteCookie){
+    	deleteCookie("id");
+    }
+    
+    $(function(){
+    	var mesg = $("#mesg").val();
+    	console.log(mesg);
+    	console.log(mesg.length);
+    	if(mesg.length != 0 || mesg != ""){ //mesg != null || mesg != undefined || 
+    		alert(mesg);
+    	}
+    	var cookieID = getCooKieForID(getCookie);
+    	if(cookieID != null || cookieID != undefined){    		
+	        $("#id").val(cookieID);
+	        $("#saveID").attr("checked","checked");
+    	}
+    	
+    	console.log(/*[[${mesg}]]*/);
+    	
+    	$("#login").click(function(){
+    		login();
+    	});
+    });
+    /*]]>*/
     </script>
 
 </head>
-<body>
+<body style="height: 100%;">
 <div th:include="view/fragment/header/Header :: copy" class="container">
-
 </div>
-<div class="container">
-	<form th:action="@{/user/login/chk}" method="post" id="loginForm"> <!-- /user/login/result -->
-	<!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> -->
-	<input type="text" name="id" id="id" placeholder="id">
-	<input type="password" name="pw" id="pw" placeholder="pw">
-	<input type="button" value="로그인" id="login">
-	</form>
+<div class="container" style="background-color: #F5F6F7; padding-top: 50px; height: 100%;text-align: center;"> <!--  -->
+	
+		<div style="margin-bottom: 50px;">
+			<h2 >LOGIN</h2>
+		</div>
+	
+		<form th:action="@{/user/login/chk}" method="post" id="loginForm" style="margin-bottom: 20px;"> <!-- /user/login/result -->
+			<!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> -->
+				<input class="form-control" style="width: 460px;margin: auto;margin-bottom: 20px;" type="text" name="id" id="id" placeholder="id">
+				<input class="form-control" style="width: 460px;margin: auto;margin-bottom: 20px;" type="password" name="pw" id="pw" placeholder="pw">
+			<input type="button" class="btn btn-info" value="로그인" id="login" style="width: 460px;">
+		</form>
+		<div style="width: 460px;height: 38px;margin:auto;border-bottom: 1px solid rgba(166,166,166,.5);text-align: left;">
+			<input type="checkbox" id="saveID">
+			<label>id 저장</label>
+		</div>
+	
 </div>
 <input type="hidden" id="mesg" th:value="${mesg}">
 </body>

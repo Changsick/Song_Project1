@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.song.test.dto.MemberDTO;
 import com.song.test.security.Role;
@@ -54,16 +55,35 @@ public class MemberController {
 
     // 로그인 페이지
     @GetMapping("/main/login")
-    public String dispLogin() {
-    	System.out.println("dispLogin~~~~~~~~~~~~");
+    public String loginPage() {
         return "view/main/login";
     }
     
+    /*
+    // 로그인error 페이지
+    @GetMapping("/main/login/error")
+    public String loginError(Model m) {
+    	System.out.println("~!@~@#$!@$#@$%$&/main/login/error");
+    	m.addAttribute("mesg", "not correct");
+    	return "redirect:/main/login";
+    }*/
+    
+ // 로그인error 페이지
+    @GetMapping("/main/login/error")
+    public ModelAndView loginError(Model m) {
+    	System.out.println("~!@~@#$!@$#@$%$&/main/login/error");
+    	ModelAndView mav = new ModelAndView();
+    	
+    	mav.addObject("mesg", "not correct");
+    	mav.setViewName("view/main/login");
+    	return mav;
+    }
+    
  // 로그인 check
-    @PostMapping("/user/login/chk")
+    @GetMapping("/user/login/chk")
     public String execLogin() {
-    	System.out.println("execLogin~~~~~~~~~~~~");
-        return "redirect:/user/login/result";
+    	System.out.println("%%%%%%%%%%%%%%%%%execLogin~~~~~~~~~~~~");
+        return "view/main/login";
     }
 
     // 로그인 결과 페이지
@@ -74,7 +94,6 @@ public class MemberController {
     		member = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	}
     	System.out.println("member: "+member);
-    	System.out.println("dispLoginResult~~~~~~~~~~~~");
     	return "redirect:/";
 
     }
@@ -89,13 +108,14 @@ public class MemberController {
     // 접근 거부 페이지
     @GetMapping("/main/denied")
     public String dispDenied() {
+    	System.out.println("denied~@~@~@~@~@~");
         return "view/main/denied";
     }
 
     // 내 정보 페이지 => 평범한 유저, admin 둘다 허용하고 싶어서 방법을 몰라 분기처리함
 //    @PreAuthorize("hasRole('ROLE_MEMBER')")
 //    @PreAuthorize("hasRole('ROLE_ADMIN')" || "hasRole('ROLE_MEMBER')")
-    @PreAuthorize("hasRole('ROLE_ADMIN')" + " || hasRole('ROLE_MEMBER')" )
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/user/info")
     public String dispMyInfo() {
     	if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")) {
@@ -106,7 +126,6 @@ public class MemberController {
     }
 
     // 어드민 페이지
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/admin")
     public String dispAdmin() {
     	System.out.println("isAuthenticated : "+memberService.isAuthenticated());

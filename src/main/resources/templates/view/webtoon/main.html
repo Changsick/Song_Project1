@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<div th:replace="view/fragment/includes/includes :: heads"></div>   
+	<link rel="stylesheet" th:attr="href=@{/css/dropzone/dropzone.css}" />
+    <link rel="stylesheet" th:attr="href=@{/css/dropzone/dropzone.min.css}" />
+    
+    <script th:attr="src=@{/js/dropzone/dropzone.js}"></script>
+	<script th:attr="src=@{/js/dropzone/dropzone.min.js}"></script> 
+    <script type="text/javascript">
+    $(function(){
+		$(".nav-link").removeClass("active");
+		$("#webtoon").addClass("active");
+	});
+    
+    </script>
+
+</head>
+<body>
+
+<div th:include="view/fragment/header/Header :: copy" class="container"> </div>
+
+<div class="container" style="margin-top: 10px;">
+	웹툰페이지
+	
+<div class="row">
+    
+ 
+</div><!-- /. row -->
+
+</div>
+
+</body>
+</html>

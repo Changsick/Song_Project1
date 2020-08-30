@@ -8,33 +8,43 @@
 <div th:fragment="copy">
 		&copy;
 	
-	<div class="row">
-		<div class="col-md"><a th:href="@{/}"><img th:attr="src=@{/image/gridone.PNG}" /></a></div>
-		<div class="col-md"><input type="text" placeholder="검색"><button>검색</button></div>
-		<div class="col-md">
+	<div class="row" style="display: flex;flex-wrap: wrap;">
+		<div style="display: inline-block;flex: 1">
+			<a th:href="@{/}"><img style="width: 163px;height: 58px;" th:attr="src=@{/image/util/nulltoon.png}" /></a>		
+			<div style="display: inline-block;">
+			<input type="text" placeholder="제목/작가로 검색할 수 있습니다." style="width: 268px;">
+			<!-- <button>검색</button> --><a class="search"><img th:attr="src=@{/image/util/icon_scarch.png}"></a>
+			</div>
+		</div>
+		
+		<div style="display: inline-block;float: right;">
+		<!-- <div class="col-md"> -->
 			<div sec:authorize="isAnonymous()">
 				<a sec:authorize="isAnonymous()" th:href="@{/main/signup}">회원가입</a>
 				<a sec:authorize="isAnonymous()" th:href="@{/main/login}">로그인</a>
 			</div>
 			<div sec:authorize="isAuthenticated()">
 			    <span sec:authentication="name"></span> 님 반갑습니다.
+			    
 				<a sec:authorize="isAuthenticated()" th:href="@{/user/logout/result}">로그아웃</a>
 			</div>
+		<!-- </div> -->
 		</div>
 	</div>
-	<div class="row">
+	<!-- nav-tabs --> 
+	<div class="row" style="border-top: 1px solid rgba(217, 217, 217, .5); border-bottom: 1px solid rgba(217, 217, 217, .5);">
 	<ul class="nav nav-pills"> <!-- nav-tabs --> 
 		<li class="nav-item">
 			<a class="nav-link active" th:href="@{/}" onclick="nav_click(event)" id="main">홈</a>
 		</li><!-- data-toggle="tab" data-load="false" data-url="https://localhost:8080/song_project2/" -->
 		<li class="nav-item">
-			<a class="nav-link" href="#" id="webtoon">웹툰</a>
+			<a class="nav-link" th:href="@{/webtoon/main}" id="webtoon">웹툰</a>
 		</li>
 		<!-- <div class="col-md"> -->		
 		<!-- <div sec:authorize="isAuthenticated()"> -->
 			<!-- <sec:authorize access="hasRole('ROLE_ADMIN') or hasRole('ROLE_MEMBER')"> -->
 		<li class="nav-item">
-			<a class="nav-link" sec:authorize="hasRole('ROLE_MEMBER') || hasRole('ROLE_ADMIN')" th:href="@{/user/info}" id="myInfo">내정보</a> <!--  -->
+			<a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/info}" id="myInfo">내정보</a> <!--  -->
 		</li>
 		<li class="nav-item">			
 				<a class="nav-link" sec:authorize="hasRole('ROLE_MEMBER') || hasRole('ROLE_ADMIN')" th:href="@{/webtoon/webtoonUpload}" id="uploadWebtoon">웹툰올리기</a> <!--  -->
@@ -42,6 +52,10 @@
 			<!-- </sec:authorize> -->
 		<li class="nav-item">
 		    	<a class="nav-link" th:href="@{/admin}" sec:authorize="hasRole('ROLE_ADMIN')" id="admin">어드민</a>
+		    	<!-- th:href="@{/admin}" -->
+	    </li>
+	    <li class="nav-item">
+		    	<a class="nav-link" href="#" sec:authorize="isAuthenticated()" id="dashboard">대시보드</a>
 		    	<!-- th:href="@{/admin}" -->
 	    </li>
 		<!-- </div> -->
@@ -68,6 +82,10 @@
 		$('a[data-toggle="tab"]').on('hide.bs.tab', function (e) {
 		// 여기에 load 삭제 기능을 넣어도 되고...
 		});
+		
+		function nav_click(e){
+			console.log(e);
+		}
 	</script>
 
 </div>

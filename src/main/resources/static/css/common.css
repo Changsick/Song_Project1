@@ -1,0 +1,25 @@
+.main_common{
+    display: inline;
+}
+
+.active{
+	background-color: #00D564
+}
+
+.search{
+	cursor: pointer;
+}
+.search:hover{
+	cursor: pointer;
+	opacity: 0.5;
+}
+
+.carousel-control-prev:hover {
+	background-color: #BFBFBF;
+	opacity: 0.5;
+}
+
+.carousel-control-next:hover {
+	background-color: #BFBFBF;
+	opacity: 0.5;
+}
